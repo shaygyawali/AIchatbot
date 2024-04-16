@@ -1,20 +1,13 @@
-import express from 'express';
-
-const app = express();
-
-// GET - get data from database
-// PUT - update or modify (mutate) data
-// POST - send data 
-// DELETE - remove data
-
-app.use(express.json());
+import app from './app.js';
+import  connectToDatabase  from "./db/connection.js"
 
 
-app.delete("/hello", (req, res, next)=> {
-  console.log(req.body.name);
-  return res.send("Hello");
-});
-
-
-
-app.listen(3000, ()=>console.log("Server Open"));
+//connections and listeners
+const PORT = process.env.PORT || 3001;
+connectToDatabase()
+    .then(() => {
+        app.listen(PORT, () => 
+            console.log("Server Open & Connected to Database")
+        );
+    })
+    .catch((err) => console.log(err));
